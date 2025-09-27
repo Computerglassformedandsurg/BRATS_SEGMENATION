@@ -6,6 +6,7 @@ Created on Sat Sep 27 09:54:37 2025
 """
 
 import os
+os.chdir(r"C:\Users\samjo\Downloads\Jaisil Projects\archive")
 import numpy as np
 from custom_gen import imageLoader
 #import tensorflow as tf
@@ -18,6 +19,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.metrics import MeanIoU
 import glob
 import random
+
 
 
 
@@ -136,6 +138,9 @@ plt.imshow(test_mask[:,:,n_slice])
 plt.title('Mask')
 plt.show()
 
+# run these two lines before fitting
+# import tensorflow as tf
+# print(tf.config.list_physical_devices('GPU'))
 
 ###########################################################################
 #Define loss, metrics and optimizer to be used for training
@@ -224,6 +229,10 @@ my_model = load_model('saved_models/brats_3d_100epochs_simple_unet_weighted_dice
                       custom_objects={'dice_loss_plus_1focal_loss': total_loss,
                                       'iou_score':sm.metrics.IOUScore(threshold=0.5)})
 
+my_model = load_model('brats_3d.hdf5', 
+                      custom_objects={'dice_loss_plus_1focal_loss': total_loss,
+                                      'iou_score':sm.metrics.IOUScore(threshold=0.5)})
+
 #Now all set to continue the training process. 
 history2=my_model.fit(train_img_datagen,
           steps_per_epoch=steps_per_epoch,
@@ -235,7 +244,7 @@ history2=my_model.fit(train_img_datagen,
 #################################################
 
 #For predictions you do not need to compile the model, so ...
-my_model = load_model('saved_models/brats_3d_100epochs_simple_unet_weighted_dice.hdf5', 
+my_model = load_model('brats_3d.hdf5', 
                       compile=False)
 
 
@@ -284,8 +293,8 @@ test_prediction_argmax=np.argmax(test_prediction, axis=4)[0,:,:,:]
 from matplotlib import pyplot as plt
 import random
 
-#n_slice=random.randint(0, test_prediction_argmax.shape[2])
-n_slice = 55
+n_slice=random.randint(0, test_prediction_argmax.shape[2])
+# n_slice = 55
 plt.figure(figsize=(12, 8))
 plt.subplot(231)
 plt.title('Testing Image')
