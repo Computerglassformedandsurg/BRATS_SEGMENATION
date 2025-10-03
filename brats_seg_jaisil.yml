@@ -1,0 +1,12 @@
+name: tf210_env
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - numpy
+  - tensorflow=2.10
+  - spyder
+  - scikit-image
+  - cudatoolkit=11.2
+  - cudnn=8.1.0
+prefix: C:\Users\samjo\anaconda3\envs\tf210_env
